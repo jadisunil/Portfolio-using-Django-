@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #2c3e50, #3498db); /* Gradient background */
+            color: #fff;
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8); /* Dark semi-transparent background */
+            width: 200px; /* Adjust width as needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0; /* Fixed to left side */
+            bottom: 0;
+            padding-top: 20px;
+            color: #fff;
+            transition: width 0.3s;
+        }
+        .navbar:hover {
+            width: 250px; /* Expand navbar on hover */
+        }
+        .navbar img {
+            border-radius: 12%;
+            width: 230px; /* Increased image size */
+            height: 250px; /* Increased image size */
+            margin-bottom: 25px;
+            border: 1px solid #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent hover */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding-left: 220px; /* Space for expanded navbar */
+        }
+        .card {
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.8); /* Light semi-transparent background */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #3498db; /* Blue heading color */
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            color: #2c3e50; /* Dark heading color */
+        }
+        p {
+            margin-bottom: 10px;
+            text-align: center;
+            color: #333; /* Dark text color */
+        }
+        a {
+            color: #3498db; /* Blue link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        {% if about.image %}
+            <img src="{{ about.image.url }}" alt="{{ about.name }} Image" />
+        {% endif %}
+        <a href="#about">About Me</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Work Experience</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <div class="container">
+        <section id="about" class="card">
+            <h1>Sunil Jadi</h1>
+            <p>{{ about.bio }}</p>
+        </section>
+
+        <section id="projects" class="card">
+            <h1>Projects</h1>
+            <div>
+                {% for project in projects %}
+                <div class="card">
+                    <h2>{{ project.title }}</h2>
+                    <p>{{ project.description }}</p>
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+                    {% if project.url %}
+                        <a href="{{ project.url }}">Project Link</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="experience" class="card">
+            <h1>Work Experience</h1>
+            <div>
+                {% for experience in experiences %}
+                <div class="card">
+                    <h2>{{ experience.title }} at {{ experience.company }}</h2>
+                    <p>{{ experience.description }}</p>
+                    <p>
+                        {% if experience.start_date %}{{ experience.start_date|date:"M. Y" }}{% endif %}
+                        {% if experience.end_date %} to {{ experience.end_date|date:"M. Y" }}{% else %} to Present{% endif %}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <footer id="contact" class="card">
+            <h1>Contact</h1>
+            <p>Email: {{ contact.email }}</p>
+            <p>LinkedIn: <a href="{{ contact.linkedin_link }}" target="_blank">{{ contact.linkedin_link }}</a></p>
+            <p><a href="{{ contact.resume.url }}" class="button" download>Download My Resume</a></p>
+        </footer>
+    </div>
+</body>
+</html>
